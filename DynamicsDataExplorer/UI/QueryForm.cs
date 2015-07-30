@@ -92,7 +92,7 @@ namespace DynamicsDataExplorer.UI
             _logic.SetDataGridColumns(attributes, this.dataGrid);
 
             // 条件指定用のコンボボックスを設定
-            _logic.GetAttributeCmb(attributes, cmbAttributes);
+            _logic.SetAttributeCmb(attributes, cmbAttributes);
 
             // オプションセット情報の保持
             _logic.SetOptionSetData(attributes);

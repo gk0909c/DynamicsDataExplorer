@@ -8,7 +8,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3D4999E1-C4D2-4734-93A1-90F10D50C877}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
+		WE-Markdown.css = WE-Markdown.css
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTest.csproj", "{2506F657-E940-4BF6-BD6F-8E8FD973CE61}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,6 +23,10 @@ Global
 		{C55E07BE-F7B4-4190-B712-24669CF351F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C55E07BE-F7B4-4190-B712-24669CF351F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C55E07BE-F7B4-4190-B712-24669CF351F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2506F657-E940-4BF6-BD6F-8E8FD973CE61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2506F657-E940-4BF6-BD6F-8E8FD973CE61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2506F657-E940-4BF6-BD6F-8E8FD973CE61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2506F657-E940-4BF6-BD6F-8E8FD973CE61}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

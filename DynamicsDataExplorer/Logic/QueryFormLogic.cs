@@ -78,7 +78,7 @@ namespace DynamicsDataExplorer.Logic
         /// </summary>
         /// <param name="attributes"></param>
         /// <returns></returns>
-        public void GetAttributeCmb(AttributeMetadata[] attributes, ComboBox cmb)
+        public void SetAttributeCmb(AttributeMetadata[] attributes, ComboBox cmb)
         {
             List<CmbBean> attributeList = new List<CmbBean>();
 
@@ -166,7 +166,7 @@ namespace DynamicsDataExplorer.Logic
         }
 
         /// <summary>
-        /// 「等しい」の検索条件を作成します。
+        /// 検索条件を作成します。
         /// </summary>
         /// <param name="attr"></param>
         /// <param name="value"></param>
@@ -178,36 +178,8 @@ namespace DynamicsDataExplorer.Logic
                 return null;
             }
 
-            // 演算子の設定
-            //ConditionOperator conditionOperator = ConditionOperator.Equal;
-            //switch (operatorValue)
-            //{
-            //    case CmbOperator.Match:
-            //        conditionOperator = ConditionOperator.Like;
-            //        break;
-            //    case CmbOperator.ForwardMath:
-            //        conditionOperator = ConditionOperator.BeginsWith;
-            //        break;
-            //    case CmbOperator.BackwardMath:
-            //        conditionOperator = ConditionOperator.EndsWith;
-            //        break;
-            //    case CmbOperator.GraterThan:
-            //        conditionOperator = ConditionOperator.GreaterThan;
-            //        break;
-            //    case CmbOperator.GraterEqual:
-            //        conditionOperator = ConditionOperator.GreaterEqual;
-            //        break;
-            //    case CmbOperator.LessThan:
-            //        conditionOperator = ConditionOperator.LessThan;
-            //        break;
-            //    case CmbOperator.LessEqual:
-            //        conditionOperator = ConditionOperator.LessEqual;
-            //        break;
-            //}
-
             ConditionExpression cond = new ConditionExpression();
             cond.AttributeName = attr;
-            //cond.Operator = conditionOperator;
             cond.Operator = operatorValue.GetOpeator();
             cond.Values.Add(value);
 

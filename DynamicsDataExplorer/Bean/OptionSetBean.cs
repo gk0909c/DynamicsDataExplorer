@@ -69,6 +69,11 @@ namespace DynamicsDataExplorer.Bean
         /// <returns></returns>
         public string GetValue(int key)
         {
+            if (!valueMap.ContainsKey(key))
+            {
+                return null;
+            }
+
             Label label = valueMap[key];
 
             if (label.UserLocalizedLabel == null)
