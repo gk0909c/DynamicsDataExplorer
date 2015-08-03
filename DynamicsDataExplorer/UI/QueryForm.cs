@@ -83,22 +83,25 @@ namespace DynamicsDataExplorer.UI
         /// <param name="e"></param>
         private void btnGetAttributes_Click(object sender, EventArgs e)
         {
-            Cursor.Current = Cursors.WaitCursor;
-            dataGrid.Columns.Clear();
-            _entityName = cmbEntities.SelectedValue.ToString();
+            if (cmbEntities.SelectedValue != null)
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                dataGrid.Columns.Clear();
+                _entityName = cmbEntities.SelectedValue.ToString();
 
-            // 項目情報を取得して、グリッドのヘッダを取得
-            AttributeMetadata[] attributes = _dynamics.getAttributes(_entityName);
-            _logic.SetDataGridColumns(attributes, this.dataGrid);
+                // 項目情報を取得して、グリッドのヘッダを取得
+                AttributeMetadata[] attributes = _dynamics.getAttributes(_entityName);
+                _logic.SetDataGridColumns(attributes, this.dataGrid);
 
-            // 条件指定用のコンボボックスを設定
-            _logic.SetAttributeCmb(attributes, cmbAttributes);
+                // 条件指定用のコンボボックスを設定
+                _logic.SetAttributeCmb(attributes, cmbAttributes);
 
-            // オプションセット情報の保持
-            _logic.SetOptionSetData(attributes);
+                // オプションセット情報の保持
+                _logic.SetOptionSetData(attributes);
 
-            btnQuery.Enabled = true;
-            Cursor.Current = Cursors.Default;
+                btnQuery.Enabled = true;
+                Cursor.Current = Cursors.Default;
+            }
         }
             
         /// <summary>
@@ -108,26 +111,31 @@ namespace DynamicsDataExplorer.UI
         /// <param name="e"></param>
         private void btnQuery_Click(object sender, EventArgs e)
         {
-            Cursor.Current = Cursors.WaitCursor;
-
-            dataGrid.Rows.Clear();
-
-            // データを取得して、グリッドビューに設定
-            try
+            if (cmbAttributes.SelectedValue != null)
             {
-                EntityCollection result = _dynamics.getData(_entityName,
-                    _logic.CreateCondition(
-                        cmbAttributes.SelectedValue.ToString(),
-                        (CmbOperator)cmbOperator.SelectedIndex,
-                        txtCondValue.Text));
-                _logic.SetDataGridValues(result, this.dataGrid);
+                Cursor.Current = Cursors.WaitCursor;
 
-            } catch (Exception ex)
-            {
-                ShowErrorMessage("検索条件を見直してください。\n" + ex.Message, "データ取得エラー");
+                dataGrid.Rows.Clear();
+
+                // データを取得して、グリッドビューに設定
+                try
+                {
+                    EntityCollection result = _dynamics.getData(_entityName,
+                        _logic.CreateCondition(
+                            cmbAttributes.SelectedValue.ToString(),
+                            (CmbOperator)cmbOperator.SelectedIndex,
+                            txtCondValue.Text));
+                    _logic.SetDataGridValues(result, this.dataGrid);
+
+                }
+                catch (Exception ex)
+                {
+                    ShowErrorMessage("検索条件を見直してください。\n" + ex.Message, "データ取得エラー");
+                }
+
+                Cursor.Current = Cursors.Default;
+
             }
-
-            Cursor.Current = Cursors.Default;
         }
 
         /// <summary>
