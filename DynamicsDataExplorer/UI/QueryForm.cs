@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using System.Drawing;
 
 using DynamicsDataExplorer.Logic;
 using DynamicsDataExplorer.Properties;
@@ -15,7 +16,10 @@ namespace DynamicsDataExplorer.UI
     {
         private DynamicsCls _dynamics;
         private QueryFormLogic _logic;
+        private ColumnSettingLogic _colLogic;
         private string _entityName;
+        private int _columnSettingListFromIndex;
+        private int _columnSettingListMaxIndex;
 
         /// <summary>
         /// コンストラクタ
@@ -25,6 +29,7 @@ namespace DynamicsDataExplorer.UI
             InitializeComponent();
 
             _logic = new QueryFormLogic();
+            _colLogic = new ColumnSettingLogic(lstColumnSetting, dataGrid);
             txtUser.Text = Settings.Default.User;
             txtPass.Text = Settings.Default.Pass;
             txtUrl.Text = Settings.Default.URL;
@@ -86,12 +91,24 @@ namespace DynamicsDataExplorer.UI
             if (cmbEntities.SelectedValue != null)
             {
                 Cursor.Current = Cursors.WaitCursor;
-                dataGrid.Columns.Clear();
+
+                try
+                {
+                    dataGrid.Columns.Clear();
+                }
+                catch (ArgumentOutOfRangeException ex)
+                {
+                    // カラム設定をした後に例外が発生することがあるが、MSのバグっぽいので無視
+                    Console.WriteLine(ex.Message);
+                }
+
                 _entityName = cmbEntities.SelectedValue.ToString();
 
                 // 項目情報を取得して、グリッドのヘッダを取得
                 AttributeMetadata[] attributes = _dynamics.getAttributes(_entityName);
                 _logic.SetDataGridColumns(attributes, this.dataGrid);
+                _logic.SetColumnSettingList(attributes, lstColumnSetting);
+                _columnSettingListMaxIndex = lstColumnSetting.Items.Count;
 
                 // 条件指定用のコンボボックスを設定
                 _logic.SetAttributeCmb(attributes, cmbAttributes);
@@ -111,31 +128,26 @@ namespace DynamicsDataExplorer.UI
         /// <param name="e"></param>
         private void btnQuery_Click(object sender, EventArgs e)
         {
-            if (cmbAttributes.SelectedValue != null)
+            Cursor.Current = Cursors.WaitCursor;
+            dataGrid.Rows.Clear();
+
+            // データを取得して、グリッドビューに設定
+            try
             {
-                Cursor.Current = Cursors.WaitCursor;
-
-                dataGrid.Rows.Clear();
-
-                // データを取得して、グリッドビューに設定
-                try
-                {
-                    EntityCollection result = _dynamics.getData(_entityName,
-                        _logic.CreateCondition(
-                            cmbAttributes.SelectedValue.ToString(),
-                            (CmbOperator)cmbOperator.SelectedIndex,
-                            txtCondValue.Text));
-                    _logic.SetDataGridValues(result, this.dataGrid);
-
-                }
-                catch (Exception ex)
-                {
-                    ShowErrorMessage("検索条件を見直してください。\n" + ex.Message, "データ取得エラー");
-                }
-
-                Cursor.Current = Cursors.Default;
+                EntityCollection result = _dynamics.getData(_entityName,
+                    _logic.CreateCondition(
+                        cmbAttributes.SelectedValue == null ? null : cmbAttributes.SelectedValue.ToString(),
+                        (CmbOperator)cmbOperator.SelectedIndex,
+                        txtCondValue.Text));
+                _logic.SetDataGridValues(result, this.dataGrid);
 
             }
+            catch (Exception ex)
+            {
+                ShowErrorMessage("検索条件を見直してください。\n" + ex.Message, "データ取得エラー");
+            }
+
+            Cursor.Current = Cursors.Default;
         }
 
         /// <summary>
@@ -159,5 +171,110 @@ namespace DynamicsDataExplorer.UI
         {
             MessageBox.Show(msg, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+
+        private void aaa(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// 列設定のドラッグ開始
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void lstColumnSetting_MouseDown(object sender, MouseEventArgs e)
+        {
+            Point p = Control.MousePosition;
+            p = lstColumnSetting.PointToClient(p);
+            _columnSettingListFromIndex = lstColumnSetting.IndexFromPoint(p);
+            if (_columnSettingListFromIndex > -1)
+            {
+                //ドラッグスタート
+                lstColumnSetting.DoDragDrop(lstColumnSetting.Items[_columnSettingListFromIndex].ToString(), DragDropEffects.Copy);
+
+            }
+        }
+
+        /// <summary>
+        /// ドラッグ＆ドロップの効果を、コピーに設定
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void lstColumnSetting_DragEnter(object sender, DragEventArgs e)
+        {
+            e.Effect = DragDropEffects.Copy;
+        }
+
+        /// <summary>
+        /// 列設定のドロップ時の動作
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void lstColumnSetting_DragDrop(object sender, DragEventArgs e)
+        {
+            string str = e.Data.GetData(DataFormats.Text).ToString();
+
+            Point p = Control.MousePosition;
+            p = lstColumnSetting.PointToClient(p);//ドロップ時のマウスの位置をクライアント座標に変換
+            int columnSettingListToIndex = lstColumnSetting.IndexFromPoint(p);//マウス下のＬＢのインデックスを得る
+            if (columnSettingListToIndex > -1 && columnSettingListToIndex < _columnSettingListMaxIndex)
+            {
+                // 列設定リストの入れ替え
+                lstColumnSetting.Items[_columnSettingListFromIndex] = lstColumnSetting.Items[columnSettingListToIndex];
+                lstColumnSetting.Items[columnSettingListToIndex] = str;
+
+                
+                // データ表示列の入れ替え
+                _logic.ReplaceDataGridColumn(
+                    dataGrid.Columns[_columnSettingListFromIndex],
+                    dataGrid.Columns[columnSettingListToIndex]
+                    );
+            }
+        }
+
+        /// <summary>
+        /// 「一番上」ボタン
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnColumnSettingTop_Click(object sender, EventArgs e)
+        {
+            _colLogic.SetSelectedIdx(lstColumnSetting.SelectedIndex);
+            _colLogic.Top();
+        }
+
+        /// <summary>
+        /// 「上」ボタン
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnColumnSettingUp_Click(object sender, EventArgs e)
+        {
+            _colLogic.SetSelectedIdx(lstColumnSetting.SelectedIndex);
+            _colLogic.Up();
+        }
+
+        /// <summary>
+        /// 「下」ボタン
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnColumnSettingDown_Click(object sender, EventArgs e)
+        {
+            _colLogic.SetSelectedIdx(lstColumnSetting.SelectedIndex);
+            _colLogic.Down(lstColumnSetting, dataGrid);
+        }
+
+        /// <summary>
+        /// 「一番下」ボタン
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnColumnSettingBottom_Click(object sender, EventArgs e)
+        {
+            _colLogic.SetSelectedIdx(lstColumnSetting.SelectedIndex);
+            _colLogic.Bottom();
+        }
+
     }
 }

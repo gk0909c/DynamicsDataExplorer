@@ -91,6 +91,31 @@ namespace DynamicsDataExplorer.Logic
             SetListToCmb(attributeList, cmb);
         }
 
+        public void SetColumnSettingList(AttributeMetadata[] attributes, ListBox lst)
+        {
+            List<CmbBean> attributeList = new List<CmbBean>();
+            lst.Items.Clear();
+            
+
+            foreach (AttributeMetadata attr in attributes)
+            {
+                string header = attr.LogicalName;
+                if (attr.DisplayName.UserLocalizedLabel == null)
+                {
+                    continue;
+                }
+                else
+                {
+                    header = attr.DisplayName.UserLocalizedLabel.Label;
+                    lst.Items.Add(header);
+                }
+
+                //CmbBean bean = new CmbBean(attr.LogicalName, attr.DisplayName);
+                //attributeList.Add(bean);
+            }
+            //attributeList.Sort((a, b) => a.DisplayName.CompareTo(b.DisplayName));
+            //SetListToListBox(attributeList, lst);
+        }
 
         /// <summary>
         /// 選択リストの表示値を取得する
@@ -184,6 +209,20 @@ namespace DynamicsDataExplorer.Logic
             cond.Values.Add(value);
 
             return cond;
+        }
+
+        public void ReplaceDataGridColumn(DataGridViewColumn from, DataGridViewColumn to)
+        {
+            DataGridViewColumn fromClone = (DataGridViewColumn)from.Clone();
+
+            from.DataPropertyName = to.DataPropertyName;
+            from.Name = to.Name;
+            from.HeaderText = to.HeaderText;
+
+            to.DataPropertyName = fromClone.DataPropertyName;
+            to.Name = fromClone.Name;
+            to.HeaderText = fromClone.HeaderText;
+
         }
 
         /// <summary>

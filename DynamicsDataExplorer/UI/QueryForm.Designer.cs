@@ -46,16 +46,25 @@
             this.btnQuery = new System.Windows.Forms.Button();
             this.cmbEntities = new System.Windows.Forms.ComboBox();
             this.btnGetAttributes = new System.Windows.Forms.Button();
+            this.tabColumnSetting = new System.Windows.Forms.TabPage();
+            this.btnColumnSettingBottom = new System.Windows.Forms.Button();
+            this.btnColumnSettingDown = new System.Windows.Forms.Button();
+            this.btnColumnSettingUp = new System.Windows.Forms.Button();
+            this.btnColumnSettingTop = new System.Windows.Forms.Button();
+            this.lblColumnSettingNotice = new System.Windows.Forms.Label();
+            this.lstColumnSetting = new System.Windows.Forms.ListBox();
             this.tabCtrl.SuspendLayout();
             this.tabLogin.SuspendLayout();
             this.tabQuery.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).BeginInit();
+            this.tabColumnSetting.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabCtrl
             // 
             this.tabCtrl.Controls.Add(this.tabLogin);
             this.tabCtrl.Controls.Add(this.tabQuery);
+            this.tabCtrl.Controls.Add(this.tabColumnSetting);
             this.tabCtrl.Location = new System.Drawing.Point(3, 2);
             this.tabCtrl.Name = "tabCtrl";
             this.tabCtrl.SelectedIndex = 0;
@@ -231,6 +240,83 @@
             this.btnGetAttributes.UseVisualStyleBackColor = true;
             this.btnGetAttributes.Click += new System.EventHandler(this.btnGetAttributes_Click);
             // 
+            // tabColumnSetting
+            // 
+            this.tabColumnSetting.BackColor = System.Drawing.Color.LightGray;
+            this.tabColumnSetting.Controls.Add(this.btnColumnSettingBottom);
+            this.tabColumnSetting.Controls.Add(this.btnColumnSettingDown);
+            this.tabColumnSetting.Controls.Add(this.btnColumnSettingUp);
+            this.tabColumnSetting.Controls.Add(this.btnColumnSettingTop);
+            this.tabColumnSetting.Controls.Add(this.lblColumnSettingNotice);
+            this.tabColumnSetting.Controls.Add(this.lstColumnSetting);
+            this.tabColumnSetting.Location = new System.Drawing.Point(4, 22);
+            this.tabColumnSetting.Name = "tabColumnSetting";
+            this.tabColumnSetting.Size = new System.Drawing.Size(1173, 724);
+            this.tabColumnSetting.TabIndex = 0;
+            this.tabColumnSetting.Text = "カラム設定";
+            // 
+            // btnColumnSettingBottom
+            // 
+            this.btnColumnSettingBottom.Location = new System.Drawing.Point(470, 170);
+            this.btnColumnSettingBottom.Name = "btnColumnSettingBottom";
+            this.btnColumnSettingBottom.Size = new System.Drawing.Size(75, 23);
+            this.btnColumnSettingBottom.TabIndex = 5;
+            this.btnColumnSettingBottom.Text = "一番下";
+            this.btnColumnSettingBottom.UseVisualStyleBackColor = true;
+            this.btnColumnSettingBottom.Click += new System.EventHandler(this.btnColumnSettingBottom_Click);
+            // 
+            // btnColumnSettingDown
+            // 
+            this.btnColumnSettingDown.Location = new System.Drawing.Point(470, 130);
+            this.btnColumnSettingDown.Name = "btnColumnSettingDown";
+            this.btnColumnSettingDown.Size = new System.Drawing.Size(75, 23);
+            this.btnColumnSettingDown.TabIndex = 4;
+            this.btnColumnSettingDown.Text = "下";
+            this.btnColumnSettingDown.UseVisualStyleBackColor = true;
+            this.btnColumnSettingDown.Click += new System.EventHandler(this.btnColumnSettingDown_Click);
+            // 
+            // btnColumnSettingUp
+            // 
+            this.btnColumnSettingUp.Location = new System.Drawing.Point(470, 90);
+            this.btnColumnSettingUp.Name = "btnColumnSettingUp";
+            this.btnColumnSettingUp.Size = new System.Drawing.Size(75, 23);
+            this.btnColumnSettingUp.TabIndex = 3;
+            this.btnColumnSettingUp.Text = "上";
+            this.btnColumnSettingUp.UseVisualStyleBackColor = true;
+            this.btnColumnSettingUp.Click += new System.EventHandler(this.btnColumnSettingUp_Click);
+            // 
+            // btnColumnSettingTop
+            // 
+            this.btnColumnSettingTop.Location = new System.Drawing.Point(470, 50);
+            this.btnColumnSettingTop.Name = "btnColumnSettingTop";
+            this.btnColumnSettingTop.Size = new System.Drawing.Size(75, 23);
+            this.btnColumnSettingTop.TabIndex = 2;
+            this.btnColumnSettingTop.Text = "一番上";
+            this.btnColumnSettingTop.UseVisualStyleBackColor = true;
+            this.btnColumnSettingTop.Click += new System.EventHandler(this.btnColumnSettingTop_Click);
+            // 
+            // lblColumnSettingNotice
+            // 
+            this.lblColumnSettingNotice.AutoSize = true;
+            this.lblColumnSettingNotice.Location = new System.Drawing.Point(603, 51);
+            this.lblColumnSettingNotice.Name = "lblColumnSettingNotice";
+            this.lblColumnSettingNotice.Size = new System.Drawing.Size(200, 48);
+            this.lblColumnSettingNotice.TabIndex = 1;
+            this.lblColumnSettingNotice.Text = "各ボタンでカラムを移動します。\r\nDrag&&Dropで入れ替えることもできます。\r\n\r\n設定後はデータを取得しなおしてください。";
+            // 
+            // lstColumnSetting
+            // 
+            this.lstColumnSetting.AllowDrop = true;
+            this.lstColumnSetting.FormattingEnabled = true;
+            this.lstColumnSetting.ItemHeight = 12;
+            this.lstColumnSetting.Location = new System.Drawing.Point(18, 27);
+            this.lstColumnSetting.Name = "lstColumnSetting";
+            this.lstColumnSetting.Size = new System.Drawing.Size(428, 688);
+            this.lstColumnSetting.TabIndex = 0;
+            this.lstColumnSetting.DragDrop += new System.Windows.Forms.DragEventHandler(this.lstColumnSetting_DragDrop);
+            this.lstColumnSetting.DragEnter += new System.Windows.Forms.DragEventHandler(this.lstColumnSetting_DragEnter);
+            this.lstColumnSetting.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lstColumnSetting_MouseDown);
+            // 
             // QueryForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -247,6 +333,8 @@
             this.tabQuery.ResumeLayout(false);
             this.tabQuery.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).EndInit();
+            this.tabColumnSetting.ResumeLayout(false);
+            this.tabColumnSetting.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -271,6 +359,13 @@
         private System.Windows.Forms.ComboBox cmbAttributes;
         private System.Windows.Forms.Button btnSaveConnectSetting;
         private System.Windows.Forms.ComboBox cmbOperator;
+        private System.Windows.Forms.TabPage tabColumnSetting;
+        private System.Windows.Forms.ListBox lstColumnSetting;
+        private System.Windows.Forms.Label lblColumnSettingNotice;
+        private System.Windows.Forms.Button btnColumnSettingBottom;
+        private System.Windows.Forms.Button btnColumnSettingDown;
+        private System.Windows.Forms.Button btnColumnSettingUp;
+        private System.Windows.Forms.Button btnColumnSettingTop;
     }
 }
 
