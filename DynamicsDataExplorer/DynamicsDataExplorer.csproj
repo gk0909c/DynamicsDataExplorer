@@ -68,7 +68,8 @@
     <Compile Include="Constants\CmbOperator.cs" />
     <Compile Include="Dynamics\DynamicsCls.cs" />
     <Compile Include="Bean\OptionSetBean.cs" />
-    <Compile Include="Logic\ColumnSettingLogic.cs" />
+    <Compile Include="Logic\ColumnMoveLogic.cs" />
+    <Compile Include="Logic\ColumnReplaceLogic.cs" />
     <Compile Include="UI\QueryForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -6,22 +6,18 @@ namespace DynamicsDataExplorer.Logic
     /// <summary>
     /// データグリッドのカラム設定関連のロジック
     /// </summary>
-    class ColumnSettingLogic
+    class ColumnMoveLogic
     {
         private ListBox _list;
         private DataGridView _grid;
+        // 追加等の操作後にリストからとると動作がおかしくなるため、CheckDoメソッド内で設定
         private int _selectedIdx;
 
-        public ColumnSettingLogic(ListBox list, DataGridView grid)
+        public ColumnMoveLogic(ListBox list, DataGridView grid)
         {
             _list = list;
             _grid = grid;
             _selectedIdx = list.SelectedIndex;
-        }
-
-        public void SetSelectedIdx(int idx)
-        {
-            _selectedIdx = idx;
         }
 
         /// <summary>
@@ -45,7 +41,7 @@ namespace DynamicsDataExplorer.Logic
         /// <param name="grid"></param>
         public void Up()
         {
-            if (CheckDo(_selectedIdx, 0))
+            if (CheckDo(_list.SelectedIndex, 0))
             {
                 InsCommon(_selectedIdx - 1);
                 RemoveCommon(_selectedIdx + 1);
@@ -59,7 +55,7 @@ namespace DynamicsDataExplorer.Logic
         /// <param name="grid"></param>
         public void Down()
         {
-            if (CheckDo(_selectedIdx + 1, _list.Items.Count))
+            if (CheckDo(_list.SelectedIndex + 1, _list.Items.Count))
             {
                 InsCommon(_selectedIdx + 2);
                 RemoveCommon(_selectedIdx);
@@ -73,7 +69,7 @@ namespace DynamicsDataExplorer.Logic
         /// <param name="grid"></param>
         public void Bottom()
         {
-            if (CheckDo(_selectedIdx + 1, _list.Items.Count))
+            if (CheckDo(_list.SelectedIndex + 1, _list.Items.Count))
             {
                 string selected = _list.SelectedItem.ToString();
                 DataGridViewColumn org = (DataGridViewColumn)_grid.Columns[_selectedIdx].Clone();
@@ -87,6 +83,8 @@ namespace DynamicsDataExplorer.Logic
 
         private bool CheckDo(int check1, int check2)
         {
+            _selectedIdx = _list.SelectedIndex;
+
             if (_selectedIdx > -1 && (check1 != check2))
             {
                 return true;

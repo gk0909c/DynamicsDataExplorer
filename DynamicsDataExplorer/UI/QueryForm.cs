@@ -16,10 +16,9 @@ namespace DynamicsDataExplorer.UI
     {
         private DynamicsCls _dynamics;
         private QueryFormLogic _logic;
-        private ColumnSettingLogic _colLogic;
+        private ColumnMoveLogic _moveColLogic;
+        private ColumnReplaceLogic _replaceColLogic;
         private string _entityName;
-        private int _columnSettingListFromIndex;
-        private int _columnSettingListMaxIndex;
 
         /// <summary>
         /// コンストラクタ
@@ -29,7 +28,8 @@ namespace DynamicsDataExplorer.UI
             InitializeComponent();
 
             _logic = new QueryFormLogic();
-            _colLogic = new ColumnSettingLogic(lstColumnSetting, dataGrid);
+            _moveColLogic = new ColumnMoveLogic(lstColumnSetting, dataGrid);
+            _replaceColLogic = new ColumnReplaceLogic(lstColumnSetting, dataGrid);
             txtUser.Text = Settings.Default.User;
             txtPass.Text = Settings.Default.Pass;
             txtUrl.Text = Settings.Default.URL;
@@ -108,7 +108,6 @@ namespace DynamicsDataExplorer.UI
                 AttributeMetadata[] attributes = _dynamics.getAttributes(_entityName);
                 _logic.SetDataGridColumns(attributes, this.dataGrid);
                 _logic.SetColumnSettingList(attributes, lstColumnSetting);
-                _columnSettingListMaxIndex = lstColumnSetting.Items.Count;
 
                 // 条件指定用のコンボボックスを設定
                 _logic.SetAttributeCmb(attributes, cmbAttributes);
@@ -166,15 +165,14 @@ namespace DynamicsDataExplorer.UI
             MessageBox.Show("接続情報を保存しました。", "通知", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         
-
+        /// <summary>
+        /// エラーメッセージ表示の共通メソッド
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <param name="title"></param>
         private void ShowErrorMessage(string msg, string title)
         {
             MessageBox.Show(msg, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-
-        private void aaa(object sender, MouseEventArgs e)
-        {
-
         }
 
         /// <summary>
@@ -184,15 +182,7 @@ namespace DynamicsDataExplorer.UI
         /// <param name="e"></param>
         private void lstColumnSetting_MouseDown(object sender, MouseEventArgs e)
         {
-            Point p = Control.MousePosition;
-            p = lstColumnSetting.PointToClient(p);
-            _columnSettingListFromIndex = lstColumnSetting.IndexFromPoint(p);
-            if (_columnSettingListFromIndex > -1)
-            {
-                //ドラッグスタート
-                lstColumnSetting.DoDragDrop(lstColumnSetting.Items[_columnSettingListFromIndex].ToString(), DragDropEffects.Copy);
-
-            }
+            _replaceColLogic.StartReplace(GetListIndex(Control.MousePosition));
         }
 
         /// <summary>
@@ -212,24 +202,19 @@ namespace DynamicsDataExplorer.UI
         /// <param name="e"></param>
         private void lstColumnSetting_DragDrop(object sender, DragEventArgs e)
         {
-            string str = e.Data.GetData(DataFormats.Text).ToString();
+            _replaceColLogic.EndReplace(
+                e.Data.GetData(DataFormats.Text).ToString(),
+                GetListIndex(Control.MousePosition));
+        }
 
-            Point p = Control.MousePosition;
-            p = lstColumnSetting.PointToClient(p);//ドロップ時のマウスの位置をクライアント座標に変換
-            int columnSettingListToIndex = lstColumnSetting.IndexFromPoint(p);//マウス下のＬＢのインデックスを得る
-            if (columnSettingListToIndex > -1 && columnSettingListToIndex < _columnSettingListMaxIndex)
-            {
-                // 列設定リストの入れ替え
-                lstColumnSetting.Items[_columnSettingListFromIndex] = lstColumnSetting.Items[columnSettingListToIndex];
-                lstColumnSetting.Items[columnSettingListToIndex] = str;
-
-                
-                // データ表示列の入れ替え
-                _logic.ReplaceDataGridColumn(
-                    dataGrid.Columns[_columnSettingListFromIndex],
-                    dataGrid.Columns[columnSettingListToIndex]
-                    );
-            }
+        /// <summary>
+        /// マウスの位置にあるリストのインデックス取得
+        /// </summary>
+        /// <returns></returns>
+        private int GetListIndex(Point p)
+        {
+            p = lstColumnSetting.PointToClient(p);
+            return lstColumnSetting.IndexFromPoint(p);
         }
 
         /// <summary>
@@ -239,8 +224,7 @@ namespace DynamicsDataExplorer.UI
         /// <param name="e"></param>
         private void btnColumnSettingTop_Click(object sender, EventArgs e)
         {
-            _colLogic.SetSelectedIdx(lstColumnSetting.SelectedIndex);
-            _colLogic.Top();
+            _moveColLogic.Top();
         }
 
         /// <summary>
@@ -250,8 +234,7 @@ namespace DynamicsDataExplorer.UI
         /// <param name="e"></param>
         private void btnColumnSettingUp_Click(object sender, EventArgs e)
         {
-            _colLogic.SetSelectedIdx(lstColumnSetting.SelectedIndex);
-            _colLogic.Up();
+            _moveColLogic.Up();
         }
 
         /// <summary>
@@ -261,8 +244,7 @@ namespace DynamicsDataExplorer.UI
         /// <param name="e"></param>
         private void btnColumnSettingDown_Click(object sender, EventArgs e)
         {
-            _colLogic.SetSelectedIdx(lstColumnSetting.SelectedIndex);
-            _colLogic.Down();
+            _moveColLogic.Down();
         }
 
         /// <summary>
@@ -272,8 +254,7 @@ namespace DynamicsDataExplorer.UI
         /// <param name="e"></param>
         private void btnColumnSettingBottom_Click(object sender, EventArgs e)
         {
-            _colLogic.SetSelectedIdx(lstColumnSetting.SelectedIndex);
-            _colLogic.Bottom();
+            _moveColLogic.Bottom();
         }
 
     }

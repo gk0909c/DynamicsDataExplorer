@@ -211,20 +211,6 @@ namespace DynamicsDataExplorer.Logic
             return cond;
         }
 
-        public void ReplaceDataGridColumn(DataGridViewColumn from, DataGridViewColumn to)
-        {
-            DataGridViewColumn fromClone = (DataGridViewColumn)from.Clone();
-
-            from.DataPropertyName = to.DataPropertyName;
-            from.Name = to.Name;
-            from.HeaderText = to.HeaderText;
-
-            to.DataPropertyName = fromClone.DataPropertyName;
-            to.Name = fromClone.Name;
-            to.HeaderText = fromClone.HeaderText;
-
-        }
-
         /// <summary>
         /// コンボボックスBeanのリストをコンボボックスに割り当てます。
         /// </summary>

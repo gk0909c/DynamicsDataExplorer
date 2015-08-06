@@ -7,74 +7,66 @@ using DynamicsDataExplorer.Logic;
 namespace UnitTest.Logic
 {
     [TestFixture]
-    class ColumnSettingLogicTest
+    class ColumnMoveLogicTest
     {
         private ListBox _list;
         private DataGridView _grid;
 
         [TestCase]
-        public void ColumnSettingLogicTest_TopTest01()
+        public void ColumnMoveLogicTest_TopTest01()
         {
-            ColumnSettingLogic cls = new ColumnSettingLogic(_list, _grid);
+            ColumnMoveLogic cls = new ColumnMoveLogic(_list, _grid);
             _list.SelectedIndex = 2;
-            cls.SetSelectedIdx(2);
             cls.Top();
 
             DoAssert("3", "1", "2");
 
             _list.SelectedIndex = 0;
-            cls.SetSelectedIdx(0);
             cls.Top();
 
             DoAssert("3", "1", "2");
         }
 
         [TestCase]
-        public void ColumnSettingLogicTest_UpTest01()
+        public void ColumnMoveLogicTest_UpTest01()
         {
-            ColumnSettingLogic cls = new ColumnSettingLogic(_list, _grid);
+            ColumnMoveLogic cls = new ColumnMoveLogic(_list, _grid);
             _list.SelectedIndex = 2;
-            cls.SetSelectedIdx(2);
             cls.Up();
 
             DoAssert("1", "3", "2");
 
             _list.SelectedIndex = 0;
-            cls.SetSelectedIdx(0);
             cls.Up();
 
             DoAssert("1", "3", "2");
         }
 
         [TestCase]
-        public void ColumnSettingLogicTest_DownTest01()
+        public void ColumnMoveLogicTest_DownTest01()
         {
-            ColumnSettingLogic cls = new ColumnSettingLogic(_list, _grid);
+            ColumnMoveLogic cls = new ColumnMoveLogic(_list, _grid);
             _list.SelectedIndex = 0;
-            cls.SetSelectedIdx(0);
             cls.Down();
 
             DoAssert("2", "1", "3");
 
             _list.SelectedIndex = 2;
-            cls.SetSelectedIdx(2);
             cls.Down();
 
             DoAssert("2", "1", "3");
         }
 
         [TestCase]
-        public void ColumnSettingLogicTest_BottomTest01()
+        public void ColumnMoveLogicTest_BottomTest01()
         {
-            ColumnSettingLogic cls = new ColumnSettingLogic(_list, _grid);
+            ColumnMoveLogic cls = new ColumnMoveLogic(_list, _grid);
             _list.SelectedIndex = 0;
-            cls.SetSelectedIdx(0);
             cls.Bottom();
 
             DoAssert("2", "3", "1");
 
             _list.SelectedIndex = 2;
-            cls.SetSelectedIdx(2);
             cls.Bottom();
 
             DoAssert("2", "3", "1");
