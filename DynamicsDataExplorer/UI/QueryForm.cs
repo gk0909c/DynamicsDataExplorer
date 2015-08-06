@@ -262,7 +262,7 @@ namespace DynamicsDataExplorer.UI
         private void btnColumnSettingDown_Click(object sender, EventArgs e)
         {
             _colLogic.SetSelectedIdx(lstColumnSetting.SelectedIndex);
-            _colLogic.Down(lstColumnSetting, dataGrid);
+            _colLogic.Down();
         }
 
         /// <summary>
