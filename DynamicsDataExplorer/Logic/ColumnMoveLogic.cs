@@ -78,9 +78,17 @@ namespace DynamicsDataExplorer.Logic
                 _grid.Columns.Add(org);
 
                 RemoveCommon(_selectedIdx);
+
+                _list.SelectedIndex = _list.Items.Count - 1;
             }
         }
 
+        /// <summary>
+        /// 移動可能かチェックする。
+        /// </summary>
+        /// <param name="check1"></param>
+        /// <param name="check2"></param>
+        /// <returns></returns>
         private bool CheckDo(int check1, int check2)
         {
             _selectedIdx = _list.SelectedIndex;
@@ -108,6 +116,8 @@ namespace DynamicsDataExplorer.Logic
 
             _list.Items.Insert(insertTo, selected);
             _grid.Columns.Insert(insertTo, org);
+
+            _list.SelectedIndex = insertTo;
         }
 
         /// <summary>
