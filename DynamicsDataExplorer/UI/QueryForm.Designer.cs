@@ -47,6 +47,8 @@
             this.cmbEntities = new System.Windows.Forms.ComboBox();
             this.btnGetAttributes = new System.Windows.Forms.Button();
             this.tabColumnSetting = new System.Windows.Forms.TabPage();
+            this.btnLoadColumnSetting = new System.Windows.Forms.Button();
+            this.btnSaveColumnSetting = new System.Windows.Forms.Button();
             this.btnColumnSettingBottom = new System.Windows.Forms.Button();
             this.btnColumnSettingDown = new System.Windows.Forms.Button();
             this.btnColumnSettingUp = new System.Windows.Forms.Button();
@@ -214,11 +216,11 @@
             // 
             // btnQuery
             // 
-            this.btnQuery.Location = new System.Drawing.Point(1067, 43);
+            this.btnQuery.Location = new System.Drawing.Point(1005, 43);
             this.btnQuery.Name = "btnQuery";
-            this.btnQuery.Size = new System.Drawing.Size(75, 23);
+            this.btnQuery.Size = new System.Drawing.Size(137, 23);
             this.btnQuery.TabIndex = 6;
-            this.btnQuery.Text = "データ取得";
+            this.btnQuery.Text = "データ取得（F10）";
             this.btnQuery.UseVisualStyleBackColor = true;
             this.btnQuery.Click += new System.EventHandler(this.btnQuery_Click);
             // 
@@ -243,6 +245,8 @@
             // tabColumnSetting
             // 
             this.tabColumnSetting.BackColor = System.Drawing.Color.LightGray;
+            this.tabColumnSetting.Controls.Add(this.btnLoadColumnSetting);
+            this.tabColumnSetting.Controls.Add(this.btnSaveColumnSetting);
             this.tabColumnSetting.Controls.Add(this.btnColumnSettingBottom);
             this.tabColumnSetting.Controls.Add(this.btnColumnSettingDown);
             this.tabColumnSetting.Controls.Add(this.btnColumnSettingUp);
@@ -254,6 +258,26 @@
             this.tabColumnSetting.Size = new System.Drawing.Size(1173, 724);
             this.tabColumnSetting.TabIndex = 0;
             this.tabColumnSetting.Text = "カラム設定";
+            // 
+            // btnLoadColumnSetting
+            // 
+            this.btnLoadColumnSetting.Location = new System.Drawing.Point(470, 318);
+            this.btnLoadColumnSetting.Name = "btnLoadColumnSetting";
+            this.btnLoadColumnSetting.Size = new System.Drawing.Size(177, 23);
+            this.btnLoadColumnSetting.TabIndex = 7;
+            this.btnLoadColumnSetting.Text = "保存した設定を復元（F11）";
+            this.btnLoadColumnSetting.UseVisualStyleBackColor = true;
+            this.btnLoadColumnSetting.Click += new System.EventHandler(this.btnLoadColumnSetting_Click);
+            // 
+            // btnSaveColumnSetting
+            // 
+            this.btnSaveColumnSetting.Location = new System.Drawing.Point(470, 279);
+            this.btnSaveColumnSetting.Name = "btnSaveColumnSetting";
+            this.btnSaveColumnSetting.Size = new System.Drawing.Size(139, 23);
+            this.btnSaveColumnSetting.TabIndex = 6;
+            this.btnSaveColumnSetting.Text = "設定を保存（F12）";
+            this.btnSaveColumnSetting.UseVisualStyleBackColor = true;
+            this.btnSaveColumnSetting.Click += new System.EventHandler(this.btnSaveColumnSetting_Click);
             // 
             // btnColumnSettingBottom
             // 
@@ -323,10 +347,12 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1184, 762);
             this.Controls.Add(this.tabCtrl);
+            this.KeyPreview = true;
             this.Name = "QueryForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Dynamicsデータ";
             this.Load += new System.EventHandler(this.QueryForm_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.QueryForm_KeyDown);
             this.tabCtrl.ResumeLayout(false);
             this.tabLogin.ResumeLayout(false);
             this.tabLogin.PerformLayout();
@@ -366,6 +392,8 @@
         private System.Windows.Forms.Button btnColumnSettingDown;
         private System.Windows.Forms.Button btnColumnSettingUp;
         private System.Windows.Forms.Button btnColumnSettingTop;
+        private System.Windows.Forms.Button btnSaveColumnSetting;
+        private System.Windows.Forms.Button btnLoadColumnSetting;
     }
 }
 

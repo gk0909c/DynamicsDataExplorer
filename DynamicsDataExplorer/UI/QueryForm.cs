@@ -18,6 +18,7 @@ namespace DynamicsDataExplorer.UI
         private QueryFormLogic _logic;
         private ColumnMoveLogic _moveColLogic;
         private ColumnReplaceLogic _replaceColLogic;
+        private ColumnSettingSaveLogic _saveColLogic;
         private string _entityName;
 
         /// <summary>
@@ -30,6 +31,7 @@ namespace DynamicsDataExplorer.UI
             _logic = new QueryFormLogic();
             _moveColLogic = new ColumnMoveLogic(lstColumnSetting, dataGrid);
             _replaceColLogic = new ColumnReplaceLogic(lstColumnSetting, dataGrid);
+            _saveColLogic = new ColumnSettingSaveLogic(lstColumnSetting, dataGrid);
             txtUser.Text = Settings.Default.User;
             txtPass.Text = Settings.Default.Pass;
             txtUrl.Text = Settings.Default.URL;
@@ -255,6 +257,100 @@ namespace DynamicsDataExplorer.UI
         private void btnColumnSettingBottom_Click(object sender, EventArgs e)
         {
             _moveColLogic.Bottom();
+        }
+
+        /// <summary>
+        /// カラム設定保存ボタン
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnSaveColumnSetting_Click(object sender, EventArgs e)
+        {
+            DoSaveColumnSetting();
+        }
+
+        /// <summary>
+        /// カラム設定保存の実処理
+        /// </summary>
+        private void DoSaveColumnSetting()
+        {
+            if (!ChkEntitySelected())
+            {
+                return;
+            }
+
+            _saveColLogic.Save(_entityName);
+            MessageBox.Show("設定を保存しました。", "完了");
+        }
+
+        /// <summary>
+        /// カラム設定読み込みボタン
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnLoadColumnSetting_Click(object sender, EventArgs e)
+        {
+            DoLoadColumnSetting();
+        }
+
+        /// <summary>
+        /// カラム設定読み込みの実処理
+        /// </summary>
+        private void DoLoadColumnSetting()
+        {
+            if (!ChkEntitySelected())
+            {
+                return;
+            }
+
+            if (_saveColLogic.Load(_entityName))
+            {
+                MessageBox.Show("設定を読み込みました。", "完了");
+            }
+            else
+            {
+                ShowErrorMessage("保存されている設定がありません。", "読み込みエラー");
+            }
+
+        }
+
+        /// <summary>
+        /// エンティティ定義取得チェック
+        /// </summary>
+        /// <returns></returns>
+        private bool ChkEntitySelected()
+        {
+            if (String.IsNullOrEmpty(_entityName))
+            {
+                ShowErrorMessage("先にエンティティの定義を取得してください。", "エンティティ選択エラー");
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// ショートカット割り当て
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void QueryForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.F10 :
+                    btnQuery.PerformClick();
+                    break;
+                case Keys.F11 :
+                    DoLoadColumnSetting();
+                    break;
+                case Keys.F12:
+                    DoSaveColumnSetting();
+                    break;
+
+            }
         }
 
     }

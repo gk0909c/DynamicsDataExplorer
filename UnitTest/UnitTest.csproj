@@ -59,6 +59,7 @@
     <Compile Include="Constants\CmbOperatorExtTest.cs" />
     <Compile Include="Logic\ColumnReplaceLogicTest.cs" />
     <Compile Include="Logic\ColumnMoveLogicTest.cs" />
+    <Compile Include="Logic\ColumnSettingSaveLogicTest.cs" />
     <Compile Include="Logic\QueryFormLogicTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

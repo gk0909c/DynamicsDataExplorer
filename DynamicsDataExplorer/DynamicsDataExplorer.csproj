@@ -64,12 +64,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bean\CmbBean.cs" />
+    <Compile Include="Bean\ColumnSettingBean.cs" />
     <Compile Include="Constants\CmbOperatorExt.cs" />
     <Compile Include="Constants\CmbOperator.cs" />
     <Compile Include="Dynamics\DynamicsCls.cs" />
     <Compile Include="Bean\OptionSetBean.cs" />
     <Compile Include="Logic\ColumnMoveLogic.cs" />
     <Compile Include="Logic\ColumnReplaceLogic.cs" />
+    <Compile Include="Logic\ColumnSettingSaveLogic.cs" />
     <Compile Include="UI\QueryForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -19,12 +19,12 @@ namespace UnitTest.Logic
             _list.SelectedIndex = 2;
             cls.Top();
 
-            DoAssert("3", "1", "2");
+            DoAssert("3", "1", "2", 0);
 
             _list.SelectedIndex = 0;
             cls.Top();
 
-            DoAssert("3", "1", "2");
+            DoAssert("3", "1", "2", 0);
         }
 
         [TestCase]
@@ -34,12 +34,12 @@ namespace UnitTest.Logic
             _list.SelectedIndex = 2;
             cls.Up();
 
-            DoAssert("1", "3", "2");
+            DoAssert("1", "3", "2", 1);
 
             _list.SelectedIndex = 0;
             cls.Up();
 
-            DoAssert("1", "3", "2");
+            DoAssert("1", "3", "2", 0);
         }
 
         [TestCase]
@@ -49,12 +49,12 @@ namespace UnitTest.Logic
             _list.SelectedIndex = 0;
             cls.Down();
 
-            DoAssert("2", "1", "3");
+            DoAssert("2", "1", "3", 1);
 
             _list.SelectedIndex = 2;
             cls.Down();
 
-            DoAssert("2", "1", "3");
+            DoAssert("2", "1", "3", 2);
         }
 
         [TestCase]
@@ -64,12 +64,12 @@ namespace UnitTest.Logic
             _list.SelectedIndex = 0;
             cls.Bottom();
 
-            DoAssert("2", "3", "1");
+            DoAssert("2", "3", "1", 2);
 
             _list.SelectedIndex = 2;
             cls.Bottom();
 
-            DoAssert("2", "3", "1");
+            DoAssert("2", "3", "1", 2);
         }
 
 
@@ -99,7 +99,7 @@ namespace UnitTest.Logic
             _grid.Columns.Add(col3);
         }
 
-        private void DoAssert(string idx1, string idx2, string idx3)
+        private void DoAssert(string idx1, string idx2, string idx3, int selectedIdx)
         {
             Assert.AreEqual("item" + idx1, _list.Items[0].ToString());
             Assert.AreEqual("item" + idx2, _list.Items[1].ToString());
@@ -114,6 +114,8 @@ namespace UnitTest.Logic
             Assert.AreEqual("name" + idx3, _grid.Columns[2].Name);
             Assert.AreEqual("prop" + idx3, _grid.Columns[2].DataPropertyName);
             Assert.AreEqual("header" + idx3, _grid.Columns[2].HeaderText);
+
+            Assert.AreEqual(selectedIdx, _list.SelectedIndex);
         }
     }
 }
